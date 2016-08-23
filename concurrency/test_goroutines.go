@@ -4,7 +4,7 @@ import "fmt"
 import "strings"
 
 func main() {
-	var testMessage = &Message{content: "This is a test message"}
+	var testMessage = &message{content: "This is a test message"}
 
 	processMessage(testMessage, getMessageFormatter(3), nil)
 
@@ -25,16 +25,16 @@ func main() {
 	fmt.Println(m3)
 }
 
-type Message struct {
+type message struct {
 	content string
 }
 
-type ParseableMessage interface {
+type parseableMessage interface {
 	parseMessage(message string, formatter *func(data string) string) string
 }
 
-func (message *Message) parseMessage(formatter *func(data string) string) string {
-	return (*formatter)(message.content)
+func (aMessage *message) parseMessage(formatter *func(data string) string) string {
+	return (*formatter)(aMessage.content)
 }
 
 // message parsers
@@ -63,8 +63,8 @@ func getMessageFormatter(messageType int8) *func(data string) string {
 }
 
 // go routine action
-func processMessage(message *Message, formatter *func(data string) string, c chan string) {
+func processMessage(aMessage *message, formatter *func(data string) string, c chan string) {
 	if c != nil {
-		c <- "Processed message: " + message.parseMessage(formatter)
+		c <- "Processed message: " + aMessage.parseMessage(formatter)
 	}
 }
